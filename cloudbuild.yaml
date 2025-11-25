@@ -1,19 +1,26 @@
 steps:
+# Step 0: sanity check
 - name: gcr.io/cloud-builders/gcloud
   args: ['version']
 
-# Step 1: Run automated tests (e.g., a simple test script)
+# Step 1: Run automated tests
 - name: 'debian'
   args: ['bash', './run_tests.sh']
-  # This step will fail the build if tests don't pass
 
 # Step 2: Build the Docker image
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'us-central1-docker.pkg.dev/goaheadfish-project/goaheadfish-artifact-repo/goaheadfish:latest', '.']
+  args: [
+    'build', '-t',
+    'us-central1-docker.pkg.dev/goaheadfish-project/goaheadfish-artifact-repo/goaheadfish:latest',
+    '.'
+  ]
 
 # Step 3: Push the Docker image to Artifact Registry
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'us-central1-docker.pkg.dev/goaheadfish-project/goaheadfish-artifact-repo/goaheadfish:latest']
+  args: [
+    'push',
+    'us-central1-docker.pkg.dev/goaheadfish-project/goaheadfish-artifact-repo/goaheadfish:latest'
+  ]
 
 # Step 4: Deploy the image to Cloud Run
 - name: 'gcr.io/cloud-builders/gcloud'
@@ -21,14 +28,14 @@ steps:
     'run', 'deploy', 'goaheadfish-service',
     '--image', 'us-central1-docker.pkg.dev/goaheadfish-project/goaheadfish-artifact-repo/goaheadfish:latest',
     '--region', 'us-central1',
+    '--platform', 'managed',
     '--allow-unauthenticated'
   ]
 
-
 options:
-  # Valid values: CLOUD_LOGGING_ONLY, NONE, LEGACY
   logging: CLOUD_LOGGING_ONLY
 
+# IMPORTANT: use full resource name for service account
 serviceAccount: projects/goaheadfish-project/serviceAccounts/cloud-build-sa@goaheadfish-project.iam.gserviceaccount.com
 
 images:
