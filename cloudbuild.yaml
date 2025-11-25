@@ -26,7 +26,7 @@ options:
   # Valid values: CLOUD_LOGGING_ONLY, NONE, LEGACY
   logging: CLOUD_LOGGING_ONLY
 
-serviceAccount: cloud-build-sa@goaheadfish-project.iam.gserviceaccount.com
+serviceAccount: projects/goaheadfish-project/serviceAccounts/cloud-build-sa@goaheadfish-project.iam.gserviceaccount.com
 
 images:
 - 'us-central1-docker.pkg.dev/goAheadFish-Project/goaheadfish-artifact-repo/goAheadFish:latest'
