@@ -4,28 +4,3 @@ steps:
 
 options:
   logging: CLOUD_LOGGING_ONLY
-
-steps:
-# Step 1: Run automated tests (e.g., a simple test script)
-- name: 'ubuntu'
-  args: ['bash', './run_tests.sh']
-  # This step will fail the build if tests don't pass
-
-# Step 2: Build the Docker image
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'us-central1-docker.pkg.dev/goAheadFish-Project/goaheadfish-artifact-repo/goAheadFish:latest', '.']
-
-# Step 3: Push the Docker image to Artifact Registry
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'us-central1-docker.pkg.dev/goAheadFish-Project/goaheadfish-artifact-repo/goAheadFish:latest']
-
-# Step 4: Deploy the image to Cloud Run
-- name: 'gcr.io/cloud-builders/gcloud'
-  args: ['run', 'deploy', 'goaheadfish-service', '--image', 'us-central1-docker.pkg.dev/goAheadFish-Project/goaheadfish-artifact-repo/goAheadFish:latest', '--region', 'YOUR_REGION', '--allow-unauthenticated']
-  env:
-  - 'PROJECT_ID=goaheadfish-project'
-  - 'SERVICE_NAME=goaheadfish-service'
-
-images:
-- 'us-central1-docker.pkg.dev/goAheadFish-Project/goaheadfish-artifact-repo/goAheadFish:latest'
-
