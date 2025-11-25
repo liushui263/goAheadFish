@@ -1,10 +1,12 @@
-def main():
-    """
-    This function prints "Hello, World!" to the console.
-    """
-    print("Hello, World!")
+from flask import Flask
+import os
+
+app = Flask(__name__)
+
+@app.route("/")
+def hello():
+    return "Hello from Cloud Run!"
 
 if __name__ == "__main__":
-    # This block executes only when the script is run directly,
-    # not when it's imported as a module into another script.
-    main()
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host="0.0.0.0", port=port)
