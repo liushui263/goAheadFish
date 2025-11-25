@@ -1,6 +1,6 @@
 #defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
 options:
-  logging: NONE
+  logging: LEGACY
 
 steps:
 # Step 1: Run automated tests (e.g., a simple test script)
